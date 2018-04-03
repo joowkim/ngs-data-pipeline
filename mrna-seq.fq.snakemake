@@ -37,7 +37,7 @@ rule alignment:
     threads: 
         8
     shell:"""
-        STAR --genomeDir {params.STAR_INDEX} --sjdbOverhang 100 --twopassMode Basic --outSAMunmapped Within --outFilterType BySJout --outSAMattributes NH HI AS NM MD --outFilterMultimapNmax 20 --outFilterMismatchNmax 999  --outFilterMismatchNoverLmax 0.04  --alignIntronMin 20  --alignIntronMax 1000000  --alignMatesGapMax 1000000  --alignSJoverhangMin 8  --alignSJDBoverhangMin 1  --sjdbScore 1  --runThreadN {threads}  --genomeLoad NoSharedMemory  --outSAMtype BAM Unsorted  --quantMode TranscriptomeSAM  --outSAMheaderHD \@HD VN:1.4 SO:unsorted  --readFilesCommand zcat  --readFilesIn {input.r1} {input.r2}  --outFileNamePrefix 02.Align/{wildcards.sample}/
+        STAR --genomeDir {params.STAR_INDEX} --sjdbOverhang 100 --twopassMode Basic --outSAMunmapped Within --outFilterType BySJout --outSAMattributes NH HI AS NM MD --outFilterMismatchNoverLmax 0.04  --alignIntronMin 20  --alignIntronMax 1000000  --alignMatesGapMax 1000000  --alignSJoverhangMin 8  --alignSJDBoverhangMin 1  --sjdbScore 1  --runThreadN {threads}  --genomeLoad NoSharedMemory  --outSAMtype BAM Unsorted  --quantMode TranscriptomeSAM  --outSAMheaderHD \@HD VN:1.4 SO:unsorted  --readFilesCommand zcat  --readFilesIn {input.r1} {input.r2}  --outFileNamePrefix 02.Align/{wildcards.sample}/
 """
 
 
