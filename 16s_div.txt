@@ -1,0 +1,2 @@
+alpha_diversity:metrics observed_otus,PD_whole_tree,simpson,shannon
+beta_diversity:metrics unweighted_unifrac,weighted_unifrac
