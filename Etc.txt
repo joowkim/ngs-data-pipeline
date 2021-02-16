@@ -1,0 +1,3 @@
+rename -v 's/_S\d+_L001_R(\d+)_001/_$1/' *.gz
+
+ls *R1* | sed 's/_R1.fastq.gz//' | parallel "echo {}_R1.fastq.gz {}_R2.fastq.gz"
