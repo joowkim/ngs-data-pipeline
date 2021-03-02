@@ -10,21 +10,35 @@ RSEM_INDEX = "/app/ref/gencode/human/GRCh39.19/idx/GRCh37.p13"
 rule all:
     input:
         expand("03.Expression/{sample}/{sample}.genes.results", sample=SAMPLES)
+        
+
+rule fastqc_files:
+    input:
+        r1 = join(SAMPLE_DIR, '{sample}_1.fq.gz'),
+        r2 = join(SAMPLE_DIR, '{sample}_2.fq.gz'),
+    output:
+        out1 = "00.Fastqc/{sample}_1.fq.gz",    
+        out2 = "00.Fastqc/{sample}_1.fq.gz",
+    shell:
+    """
+        fastqc {input.r1} {input.r2} --outdir 00.Fastqc
+    """
 
 rule trim_adapter:
-	input:
-		r1 = join(SAMPLE_DIR, '{sample}_1.fq.gz'),
-		r2 = join(SAMPLE_DIR, '{sample}_2.fq.gz'),
-	params:
-		truseq_adapter = TRUSEQ_ADAPTER
-	output:
-		out1 = "01.Trim/{sample}_1.fq.gz",
-		out2 = "01.Trim/{sample}_2.fq.gz"
-	threads:
-		8
-	shell:"""
-		bbduk.sh -Xmx20g in1={input.r1} in2={input.r2} ref={params.truseq_adapter} out1={output.out1} out2={output.out2} ktrim=r k=23 mink=11 hdist=1 tpe tbo
-"""
+    input:
+        r1 = join(SAMPLE_DIR, '{sample}_1.fq.gz'),
+        r2 = join(SAMPLE_DIR, '{sample}_2.fq.gz'),
+    params:
+        truseq_adapter = TRUSEQ_ADAPTER
+    output:
+        out1 = "01.Trim/{sample}_1.fq.gz",
+        out2 = "01.Trim/{sample}_2.fq.gz"
+    threads:
+        8
+    shell:
+        """
+        bbduk.sh -Xmx20g in1={input.r1} in2={input.r2} ref={params.truseq_adapter} out1={output.out1} out2={output.out2} ktrim=r k=23 mink=11 hdist=1 tpe tbo
+        """
 
 rule alignment:
     input: 
@@ -36,9 +50,10 @@ rule alignment:
         "02.Align/{sample}/Aligned.toTranscriptome.out.bam"
     threads: 
         8
-    shell:"""
+    shell:
+        """
         STAR --genomeDir {params.STAR_INDEX} --sjdbOverhang 100 --twopassMode Basic --outSAMunmapped Within --outFilterType BySJout --outSAMattributes NH HI AS NM MD --outFilterMismatchNoverLmax 0.04  --alignIntronMin 20  --alignIntronMax 1000000  --alignMatesGapMax 1000000  --alignSJoverhangMin 8  --alignSJDBoverhangMin 1  --sjdbScore 1  --runThreadN {threads}  --genomeLoad NoSharedMemory  --outSAMtype BAM Unsorted  --quantMode TranscriptomeSAM  --outSAMheaderHD \@HD VN:1.4 SO:unsorted  --readFilesCommand zcat  --readFilesIn {input.r1} {input.r2}  --outFileNamePrefix 02.Align/{wildcards.sample}/
-"""
+        """
 
 
 rule expression:
@@ -50,6 +65,7 @@ rule expression:
         "03.Expression/{sample}/{sample}.genes.results"
     threads:
         8
-    shell:"""
+    shell:
+        """
         rsem-calculate-expression --estimate-rspd --bam --no-bam-output -p {threads} --paired-end {input.bam} {params.rsem_index} 03.Expression/{wildcards.sample}/{wildcards.sample} > 03.Expression/{wildcards.sample}/{wildcards.sample}.log --forward-prob 0
-"""
+        """
