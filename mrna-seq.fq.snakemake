@@ -5,6 +5,7 @@ STAR_INDEX = "/app/ref/gencode/human/GRCh39.19/idx"
 SAMPLE_DIR = "00.Rawdata"
 SAMPLES, = glob_wildcards(SAMPLE_DIR + "/{sample}_1.fq.gz")
 RSEM_INDEX = "/app/ref/gencode/human/GRCh39.19/idx/GRCh37.p13"
+READS = [1,2]
 
 
 rule all:
@@ -17,10 +18,8 @@ rule fastqc_files:
         r1 = join(SAMPLE_DIR, '{sample}_1.fq.gz'),
         r2 = join(SAMPLE_DIR, '{sample}_2.fq.gz'),
     output:
-        out1 = "00.Fastqc/{sample}_1_fastqc.zip",    
-        out2 = "00.Fastqc/{sample}_1_fastqc.html",
-        out3 = "00.Fastqc/{sample}_2_fastqc.html",
-        out4 = "00.Fastqc/{sample}_1_fastqc.html",
+        out1 = "00.Fastqc/{sample}_{reads}_fastqc.zip",    
+        out2 = "00.Fastqc/{sample}_{reads}_fastqc.html",
     shell:
     """
         fastqc {input.r1} {input.r2} --outdir 00.Fastqc
