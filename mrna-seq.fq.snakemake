@@ -21,9 +21,9 @@ rule fastqc_files:
         out1 = "00.Fastqc/{sample}_{reads}_fastqc.zip",    
         out2 = "00.Fastqc/{sample}_{reads}_fastqc.html",
     shell:
-    """
+        """
         fastqc {input.r1} {input.r2} --outdir 00.Fastqc
-    """
+        """
 
 rule trim_adapter:
     input:
