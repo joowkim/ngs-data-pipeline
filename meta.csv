@@ -1,0 +1,13 @@
+samp_name,subtype,samp_type
+HER2_1,HER,Tissue
+HER2_2,HER,Tissue
+HER2_3,HER,Tissue
+NBS1,Normal,Organoid
+NBS2,Normal,Organoid
+NBS3,Normal,Organoid
+Non_TNBC1,Non_TNBC,Tissue
+Non_TNBC2,Non_TNBC,Tissue
+Non_TNBC3,Non_TNBC,Tissue
+TNBC1,TNBC,Tissue
+TNBC2,TNBC,Tissue
+TNBC3,TNBC,Tissue
